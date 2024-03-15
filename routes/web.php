@@ -1,11 +1,7 @@
 <?php
 
-use App\Http\Controllers\KakaoLoginController;
+use App\Http\Controllers\SocialLoginController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/kakao/login', [KakaoLoginController::class, 'redirect']);
-Route::get('/kakao/callback', [KakaoLoginController::class, 'callback']);
+Route::get('/social/{type}/login', [SocialLoginController::class, 'redirect']);
+Route::get('/social/{type}/callback', [SocialLoginController::class, 'callback']);
