@@ -6,6 +6,7 @@ use App\Contracts\Services\SocialServiceInterface;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Http\Response;
 use Laravel\Socialite\Facades\Socialite;
 
 use InvalidArgumentException;
@@ -24,7 +25,7 @@ class SocialLoginController extends Controller
 
             return $this->socialService->redirect($type, $redirection);
         } catch (InvalidArgumentException $e) {
-            return response()->error(400, "$type 은 지원하지 않는 소셜 로그인 방식입니다.");
+            return response()->error(Response::HTTP_BAD_REQUEST, "$type 은 지원하지 않는 소셜 로그인 방식입니다.");
         }
     }
 
@@ -38,18 +39,21 @@ class SocialLoginController extends Controller
             $state = $request->query("state");
             $redirection = $this->socialService->getStateRedirection($state);
 
-            // TODO JWT 생성하기
+            // JWT 생성하기
+            $token = auth()->login($user);
 
             // 리디렉션, accessToken 등 인증 정보와 함께 프론트엔드가 처리할 수 있는 페이지로 반환
             $query = Arr::query([
-                'redirection' => $redirection
+                'redirection' => $redirection,
+                'access_token' => $token,
             ]);
+
             return redirect("https://comento.kr/job-questions?$query");
         } catch (InvalidStateException $e) {
             // 로그인 상태가 잘못된 경우 로그인을 처리할 수 있도록 소셜 로그인 페이지로 이동
             return redirect("/social/$type/login");
         } catch (InvalidArgumentException $e) {
-            return response()->error(400, "$type 은 지원하지 않는 소셜 로그인 방식입니다.");
+            return response()->error(Response::HTTP_BAD_REQUEST, "$type 은 지원하지 않는 소셜 로그인 방식입니다.");
         }
     }
 }
