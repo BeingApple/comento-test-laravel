@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -17,6 +18,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        'email',
         'name',
         'breed',
         'age',
@@ -47,10 +49,8 @@ class User extends Authenticatable
         ];
     }
 
-    /* 카카오 비즈 인증 후 이메일 값 받아올 수 있게 되면 한 계정에 여러 SNS 연동할 수 있도록 소셜 로그인 정보 별도 테이블로 분리
     public function socials(): HasMany
     {
         return $this->hasMany(Social::class);
     }
-    */
 }

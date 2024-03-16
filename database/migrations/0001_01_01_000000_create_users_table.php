@@ -11,15 +11,23 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::create('socials', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->foreignUuid('user_id')->nullable()->index();
+            $table->string('type');
+            $table->string('social_id')->unique();
+            $table->string('access_token');
+            $table->string('refresh_token');
+            $table->timestamps();
+        });
+
         Schema::create('users', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->uuid('email')->unique();
             $table->string('name');
             $table->string('password')->nullable();
             $table->string('breed')->nullable();
             $table->integer('age')->nullable();
-            $table->string('social_id')->unique();
-            $table->string('access_token');
-            $table->string('refresh_token');
             $table->rememberToken();
             $table->timestamps();
         });

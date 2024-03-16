@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Social;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 
@@ -27,17 +28,23 @@ class SocialLoginController extends Controller
     // 소셜라이트를 이용한 로그인 콜백
     public function callback(Request $request, string $type) {
         try {
-            $social = Socialite::driver($type)->user();
+            $socialInfo = Socialite::driver($type)->user();
             
-            //TODO 추후에 유저 : 소셜 = 1 : N 관계를 구축할 수 있도록 변경
-            $user = User::updateOrCreate([
-                'social_id' => $social->id,
+            $social = Social::updateOrCreate([
+                'type' => $type, 
+                'social_id' => $socialInfo->id
             ], [
-                'name' => $social->nickname,
-                'social_id' => $social->id,
-                'access_token' => $social->token,
-                'refresh_token' => $social->refreshToken
+                'access_token' => $socialInfo->token,
+                'refresh_token' => $socialInfo->refreshToken
             ]);
+
+            $user = User::updateOrCreate([
+                'email' => $socialInfo->email,
+            ], [
+                'name' => $socialInfo->nickname
+            ]);
+
+            $user->socials()->save($social);
             
             Auth::login($user);
         } catch (InvalidStateException $e) {
