@@ -11,7 +11,7 @@ use Laravel\Socialite\Contracts\User as SocialUser;
 use App\Models\User;
 
 class SocialService implements SocialServiceInterface {
-    private function saveState(string $state, string $redirection = NULL): void {
+    protected function saveState(string $state, string $redirection = NULL): void {
         if (!empty($state) && !empty($redirection)) {
             // state 와 redirection 값이 존재하면 저장하여 콜백에서 재사용
             SocialState::create([
