@@ -2,24 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Social;
+use App\Contracts\Services\SocialServiceInterface;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
-
-use App\Models\User;
-
+use Illuminate\Support\Arr;
 use Laravel\Socialite\Facades\Socialite;
-use Illuminate\Support\Facades\Auth;
 
 use InvalidArgumentException;
 use Laravel\Socialite\Two\InvalidStateException;
 
 class SocialLoginController extends Controller
 {
+    public function __construct(private readonly SocialServiceInterface $socialService) {
+    }
+
     // 소셜라이트를 이용한 소셜 로그인 연동
-    public function redirect(string $type) {
+    public function redirect(Request $request, string $type) {
         try {
-            return Socialite::driver($type)->redirect();
+            // query param으로 넘겨받은 redirection 값 불러오기
+            $redirection = $request->query("redirection");
+
+            return $this->socialService->redirect($type, $redirection);
         } catch (InvalidArgumentException $e) {
             return response()->error(400, "$type 은 지원하지 않는 소셜 로그인 방식입니다.");
         }
@@ -29,24 +32,19 @@ class SocialLoginController extends Controller
     public function callback(Request $request, string $type) {
         try {
             $socialInfo = Socialite::driver($type)->user();
-            
-            $social = Social::updateOrCreate([
-                'type' => $type, 
-                'social_id' => $socialInfo->id
-            ], [
-                'access_token' => $socialInfo->token,
-                'refresh_token' => $socialInfo->refreshToken
-            ]);
+            $user = $this->socialService->saveUser($type, $socialInfo);
 
-            $user = User::updateOrCreate([
-                'email' => $socialInfo->email,
-            ], [
-                'name' => $socialInfo->nickname
-            ]);
+            // redirection 있는지 확인
+            $state = $request->query("state");
+            $redirection = $this->socialService->getStateRedirection($state);
 
-            $user->socials()->save($social);
-            
-            Auth::login($user);
+            // TODO JWT 생성하기
+
+            // 리디렉션, accessToken 등 인증 정보와 함께 프론트엔드가 처리할 수 있는 페이지로 반환
+            $query = Arr::query([
+                'redirection' => $redirection
+            ]);
+            return redirect("https://comento.kr/job-questions?$query");
         } catch (InvalidStateException $e) {
             // 로그인 상태가 잘못된 경우 로그인을 처리할 수 있도록 소셜 로그인 페이지로 이동
             return redirect("/social/$type/login");
