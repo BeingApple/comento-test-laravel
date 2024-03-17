@@ -12,7 +12,7 @@ use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
-    public function __construct(private readonly UserServiceInterface $userService) {
+    public function __construct(protected UserServiceInterface $userService) {
     }
 
     // 유저의 추가 정보를 수정합니다.

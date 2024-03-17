@@ -77,4 +77,9 @@ class User extends Authenticatable implements JWTSubject
     {
         return [];
     }
+
+    public function isMento(): bool {
+        // 유저가 멘토인지 확인합니다.
+        return $this->type === UserType::mento;
+    }
 }

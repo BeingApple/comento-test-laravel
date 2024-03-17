@@ -6,6 +6,7 @@ use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -21,5 +22,9 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function (AuthenticationException $e, Request $request) {
             return response()->error(Response::HTTP_UNAUTHORIZED, "로그인이 필요합니다.");
+        });
+
+        $exceptions->render(function (BadRequestException $e, Request $request) {
+            return response()->error(Response::HTTP_BAD_REQUEST, $e->getMessage());
         });
     })->create();

@@ -7,7 +7,7 @@ use Illuminate\Routing\Controller;
 
 class AuthController extends Controller
 {
-    public function __construct(private readonly AuthServiceInterface $authService) {
+    public function __construct(protected AuthServiceInterface $authService) {
     }
 
     public function logout() {

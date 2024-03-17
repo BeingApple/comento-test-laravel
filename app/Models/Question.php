@@ -15,11 +15,16 @@ class Question extends Model
         'category',
         'user_id',
         'title',
-        'content',
+        'question',
     ];
 
     public function answers(): HasMany
     {
         return $this->hasMany(Answer::class);
+    }
+
+    public function isFulllAnswer(): bool {
+        // 답변이 3개 이상인지 확인
+        return $this->answers()->count() >= 3;
     }
 }

@@ -14,7 +14,7 @@ use Laravel\Socialite\Two\InvalidStateException;
 
 class SocialLoginController extends Controller
 {
-    public function __construct(private readonly SocialServiceInterface $socialService) {
+    public function __construct(protected SocialServiceInterface $socialService) {
     }
 
     // 소셜라이트를 이용한 소셜 로그인 연동
