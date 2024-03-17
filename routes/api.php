@@ -13,4 +13,5 @@ Route::middleware('auth:api')->group(function() {
 // 유저 관련 Routes
 Route::middleware('auth:api')->group(function() {
     Route::put('user/me', [UserController::class, 'updateAdditionalInfo']);
+    Route::put('user/me/type', [UserController::class, 'updateUserType']);
 });

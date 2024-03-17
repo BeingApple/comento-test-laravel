@@ -26,6 +26,7 @@ return new class extends Migration
             $table->uuid('email')->unique();
             $table->string('name');
             $table->string('password')->nullable();
+            $table->string('type')->default("mentee");
             $table->string('breed')->nullable();
             $table->integer('age')->nullable();
             $table->rememberToken();

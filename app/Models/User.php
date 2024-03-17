@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Contracts\UserType;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -23,6 +24,7 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'breed',
         'age',
+        'type',
         'social_id',
         'access_token',
         'refresh_token'
@@ -47,6 +49,7 @@ class User extends Authenticatable implements JWTSubject
     {
         return [
             'password' => 'hashed',
+            'type' => UserType::class
         ];
     }
 
