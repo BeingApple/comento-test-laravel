@@ -38,6 +38,8 @@ class QuestionService implements QuestionServiceInterface {
             throw new BadRequestException("답변이 3개 이상 등록된 질문엔 더 이상 답변할 수 없습니다.");
         }
 
+        // TODO 작성자 본인은 답변할 수 없게 변경, 이미 답변을 작성한 경우는 재답변할 수 없게
+
         // 답변을 생성합니다.
         $answer = $command->toModel();
 

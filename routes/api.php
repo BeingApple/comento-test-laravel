@@ -20,4 +20,5 @@ Route::middleware('auth:api')->group(function() {
 // 질문 관련 Routes
 Route::middleware('auth:api')->group(function() {
     Route::post('question', [QuestionController::class, 'createQuestion']);
+    Route::post('question/{question_id}/answer', [QuestionController::class, 'answerQuestion']);
 });
