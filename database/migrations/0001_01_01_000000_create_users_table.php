@@ -11,16 +11,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('socials', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->foreignUuid('user_id')->nullable()->index();
-            $table->string('type');
-            $table->string('social_id')->unique();
-            $table->string('access_token');
-            $table->string('refresh_token');
-            $table->timestamps();
-        });
-
         Schema::create('users', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('email')->unique();
@@ -30,6 +20,16 @@ return new class extends Migration
             $table->string('breed')->nullable();
             $table->integer('age')->nullable();
             $table->rememberToken();
+            $table->timestamps();
+        });
+
+        Schema::create('socials', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->foreignUuid('user_id')->nullable()->index()->references('id')->on('users');
+            $table->string('type');
+            $table->string('social_id')->unique();
+            $table->string('access_token');
+            $table->string('refresh_token');
             $table->timestamps();
         });
 
