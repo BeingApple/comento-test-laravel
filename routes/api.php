@@ -21,4 +21,5 @@ Route::middleware('auth:api')->group(function() {
 Route::middleware('auth:api')->group(function() {
     Route::post('question', [QuestionController::class, 'createQuestion']);
     Route::post('question/{question_id}/answer', [QuestionController::class, 'answerQuestion']);
+    Route::put('question/{question_id}/answer/{answer_id}/choose', [QuestionController::class, 'chooseAnswer']);
 });

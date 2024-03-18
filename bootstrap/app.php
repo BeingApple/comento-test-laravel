@@ -1,12 +1,14 @@
 <?php
 
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -26,5 +28,13 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $exceptions->render(function (BadRequestException $e, Request $request) {
             return response()->error(Response::HTTP_BAD_REQUEST, $e->getMessage());
+        });
+
+        $exceptions->render(function (NotFoundHttpException $e, Request $request) {
+            return response()->error(Response::HTTP_NOT_FOUND, $e->getMessage());
+        });
+
+        $exceptions->render(function (ModelNotFoundException $e, Request $request) {
+            return response()->error(Response::HTTP_NOT_FOUND, "요청하신 자료를 찾을 수 없습니다.");
         });
     })->create();

@@ -3,8 +3,10 @@
 namespace App\Contracts\Services;
 
 use App\Contracts\AnswerCommand;
+use App\Contracts\ChooseAnswerCommand;
 use App\Contracts\QuestionCommand;
 use App\Models\Question;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 interface QuestionServiceInterface {
     /**
@@ -27,4 +29,12 @@ interface QuestionServiceInterface {
      * @throws BadRequestException
      */
     public function answerQuestion(AnswerCommand $command): bool;
+
+    /**
+     * @param ChooseAnswerCommand $command
+     * @return bool
+     * @throws ModelNotFoundException
+     * @throws BadRequestException
+     */
+    public function chooseAnswer(ChooseAnswerCommand $command): bool;
 }

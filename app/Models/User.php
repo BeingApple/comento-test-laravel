@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use App\Contracts\UserType;
+use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Tymon\JWTAuth\Contracts\JWTSubject;
@@ -13,6 +15,11 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable implements JWTSubject
 {
     use HasFactory, Notifiable, HasUuids;
+
+    protected static function newFactory(): Factory
+    {
+        return UserFactory::new();
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -24,10 +31,7 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'breed',
         'age',
-        'type',
-        'social_id',
-        'access_token',
-        'refresh_token'
+        'type'
     ];
 
     /**
@@ -51,6 +55,16 @@ class User extends Authenticatable implements JWTSubject
             'password' => 'hashed',
             'type' => UserType::class
         ];
+    }
+
+    public function questions(): HasMany
+    {
+        return $this->hasMany(Question::class);
+    }
+
+    public function answers(): HasMany
+    {
+        return $this->hasMany(Answer::class);
     }
 
     public function socials(): HasMany
