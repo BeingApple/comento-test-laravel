@@ -18,6 +18,7 @@ return new class extends Migration
             $table->text('answer');
             $table->boolean('is_select')->default(false);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

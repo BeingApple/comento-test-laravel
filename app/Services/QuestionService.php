@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Contracts\AnswerCommand;
 use App\Contracts\ChooseAnswerCommand;
+use App\Contracts\DeleteAnswerCommand;
 use App\Contracts\QuestionCommand;
 use App\Contracts\Services\QuestionServiceInterface;
 use App\Contracts\Services\UserServiceInterface;
@@ -19,6 +20,11 @@ class QuestionService implements QuestionServiceInterface {
     public function findQuestion(string $id): Question {
         // 질문을 조회합니다.
         return Question::findOrFail($id);
+    }
+
+    public function findAnswer(string $id): Answer {
+        // 답변을 조회합니다.
+        return Answer::findOrFail($id);
     }
 
     public function createQuestion(QuestionCommand $command): bool {
@@ -76,5 +82,22 @@ class QuestionService implements QuestionServiceInterface {
         $answer->is_select = true;
 
         return $answer->save();
+    }
+
+    public function deleteAnswer(DeleteAnswerCommand $command): bool {
+        $answer = $this->findAnswer($command->answer_id);
+
+        // 답변 작성자만 답변을 삭제할 수 있습니다.
+        if ($answer->user_id !== $command->user_id) {
+            throw new NotFoundHttpException("답변 작성자만 답변을 삭제할 수 있습니다.");
+        }
+
+        // 채택된 답변은 삭제할 수 없습니다.
+        if ($answer->is_select === true) {
+            throw new BadRequestException("채택된 답변은 삭제할 수 없습니다.");
+        }
+
+        // 답변을 삭제합니다.
+        return $answer->delete();
     }
 }
