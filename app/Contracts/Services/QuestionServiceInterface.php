@@ -5,6 +5,7 @@ namespace App\Contracts\Services;
 use App\Contracts\AnswerCommand;
 use App\Contracts\ChooseAnswerCommand;
 use App\Contracts\DeleteAnswerCommand;
+use App\Contracts\DeleteQuestionCommand;
 use App\Contracts\QuestionCommand;
 use App\Models\Answer;
 use App\Models\Question;
@@ -54,4 +55,12 @@ interface QuestionServiceInterface {
      * @throws BadRequestException
      */
     public function deleteAnswer(DeleteAnswerCommand $command): bool;
+
+    /**
+     * @param DeleteQuestionCommand $command
+     * @return bool
+     * @throws ModelNotFoundException
+     * @throws BadRequestException
+     */
+    public function deleteQuestion(DeleteQuestionCommand $command): bool;
 }

@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Contracts\AnswerCommand;
 use App\Contracts\ChooseAnswerCommand;
 use App\Contracts\DeleteAnswerCommand;
+use App\Contracts\DeleteQuestionCommand;
 use App\Contracts\QuestionCommand;
 use App\Contracts\Services\QuestionServiceInterface;
 use App\Contracts\Services\UserServiceInterface;
@@ -99,5 +100,22 @@ class QuestionService implements QuestionServiceInterface {
 
         // 답변을 삭제합니다.
         return $answer->delete();
+    }
+
+    public function deleteQuestion(DeleteQuestionCommand $command): bool {
+        $question = $this->findQuestion($command->question_id);
+
+        // 질문 작성자만 삭제할 수 있습니다.
+        if ($question->user_id !== $command->user_id) {
+            throw new NotFoundHttpException("질문 작성자만 삭제할 수 있습니다.");
+        }
+
+        // 답변이 없어야 삭제할 수 있습니다.
+        if (!$question->isEmptyAnswer()) {
+            throw new BadRequestException("답변이 있는 질문은 삭제할 수 없습니다.");
+        }
+
+        // 질문 삭제
+        return $question->delete();
     }
 }
