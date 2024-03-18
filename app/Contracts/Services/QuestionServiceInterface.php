@@ -9,20 +9,21 @@ use App\Contracts\DeleteQuestionCommand;
 use App\Contracts\QuestionCommand;
 use App\Models\Answer;
 use App\Models\Question;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
 interface QuestionServiceInterface {
     /**
      * @param string $id
      * @return Question
-     * @throws ModelNotFoundException
+     * @throws NotFoundHttpException
      */
     public function findQuestion(string $id): Question;
 
     /**
      * @param string $id
      * @return Answer
-     * @throws ModelNotFoundException
+     * @throws NotFoundHttpException
      */
     public function findAnswer(string $id): Answer;
 
@@ -35,7 +36,7 @@ interface QuestionServiceInterface {
     /**
      * @param AnswerCommand $command
      * @return bool
-     * @throws ModelNotFoundException
+     * @throws NotFoundHttpException
      * @throws BadRequestException
      */
     public function answerQuestion(AnswerCommand $command): bool;
@@ -43,7 +44,7 @@ interface QuestionServiceInterface {
     /**
      * @param ChooseAnswerCommand $command
      * @return bool
-     * @throws ModelNotFoundException
+     * @throws NotFoundHttpException
      * @throws BadRequestException
      */
     public function chooseAnswer(ChooseAnswerCommand $command): bool;
@@ -51,7 +52,7 @@ interface QuestionServiceInterface {
     /**
      * @param DeleteAnswerCommand $command
      * @return bool
-     * @throws ModelNotFoundException
+     * @throws NotFoundHttpException
      * @throws BadRequestException
      */
     public function deleteAnswer(DeleteAnswerCommand $command): bool;
@@ -59,7 +60,7 @@ interface QuestionServiceInterface {
     /**
      * @param DeleteQuestionCommand $command
      * @return bool
-     * @throws ModelNotFoundException
+     * @throws NotFoundHttpException
      * @throws BadRequestException
      */
     public function deleteQuestion(DeleteQuestionCommand $command): bool;

@@ -2,16 +2,16 @@
 
 namespace App\Contracts\Services;
 
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Contracts\UserAdditionalInfo;
 use App\Contracts\UserType;
 use App\Models\User;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 interface UserServiceInterface {
     /**
      * @param string $id
      * @return User
-     * @throws ModelNotFoundException
+     * @throws NotFoundHttpException
      */
     public function findUser(string $id): User;
 
@@ -19,7 +19,7 @@ interface UserServiceInterface {
      * @param string $id
      * @param UserAdditionalInfo $info
      * @return bool
-     * @throws ModelNotFoundException
+     * @throws NotFoundHttpException
      */
     public function updateAdditionalInfo(string $id, UserAdditionalInfo $info): bool;
 
@@ -27,7 +27,7 @@ interface UserServiceInterface {
      * @param string $id
      * @param UserType $type
      * @return bool
-     * @throws ModelNotFoundException
+     * @throws NotFoundHttpException
      */
     public function updateUserType(string $id, UserType $type): bool;
 }

@@ -33,8 +33,4 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->render(function (NotFoundHttpException $e, Request $request) {
             return response()->error(Response::HTTP_NOT_FOUND, $e->getMessage());
         });
-
-        $exceptions->render(function (ModelNotFoundException $e, Request $request) {
-            return response()->error(Response::HTTP_NOT_FOUND, "요청하신 자료를 찾을 수 없습니다.");
-        });
     })->create();

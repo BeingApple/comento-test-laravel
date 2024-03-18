@@ -11,6 +11,7 @@ use App\Contracts\Services\QuestionServiceInterface;
 use App\Contracts\Services\UserServiceInterface;
 use App\Models\Answer;
 use App\Models\Question;
+use Exception;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -20,12 +21,20 @@ class QuestionService implements QuestionServiceInterface {
 
     public function findQuestion(string $id): Question {
         // 질문을 조회합니다.
-        return Question::findOrFail($id);
+        try {
+            return Question::findOrFail($id);
+        } catch (Exception $e) {
+            throw new NotFoundHttpException("찾을 수 없는 질문입니다.");
+        }
     }
 
     public function findAnswer(string $id): Answer {
         // 답변을 조회합니다.
-        return Answer::findOrFail($id);
+        try {
+            return Answer::findOrFail($id);
+        } catch (Exception $e) {
+            throw new NotFoundHttpException("찾을 수 없는 질문입니다.");
+        }
     }
 
     public function createQuestion(QuestionCommand $command): bool {
@@ -86,7 +95,9 @@ class QuestionService implements QuestionServiceInterface {
     }
 
     public function deleteAnswer(DeleteAnswerCommand $command): bool {
-        $answer = $this->findAnswer($command->answer_id);
+        $question = $this->findQuestion($command->question_id);
+        // 질문과 답변 아이디가 일치하지 않는 경우 ModelNotFoundException 가 발생합니다.
+        $answer = $question->answers()->where('id', $command->answer_id)->firstOrFail();
 
         // 답변 작성자만 답변을 삭제할 수 있습니다.
         if ($answer->user_id !== $command->user_id) {
@@ -94,7 +105,7 @@ class QuestionService implements QuestionServiceInterface {
         }
 
         // 채택된 답변은 삭제할 수 없습니다.
-        if ($answer->is_select === true) {
+        if ($answer->is_select == true) {
             throw new BadRequestException("채택된 답변은 삭제할 수 없습니다.");
         }
 

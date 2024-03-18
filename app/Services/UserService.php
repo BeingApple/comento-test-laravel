@@ -5,10 +5,16 @@ use App\Contracts\Services\UserServiceInterface;
 use App\Contracts\UserAdditionalInfo;
 use App\Contracts\UserType;
 use App\Models\User;
+use Exception;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class UserService implements UserServiceInterface {
     public function findUser(string $id): User {
-        return User::findOrFail($id);
+        try {
+            return User::findOrFail($id);
+        } catch (Exception $e) {
+            throw new NotFoundHttpException("찾을 수 없는 유저입니다.");
+        }
     }
 
     public function updateAdditionalInfo(string $id, UserAdditionalInfo $info): bool {

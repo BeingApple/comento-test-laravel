@@ -20,6 +20,8 @@ Route::middleware('auth:api')->group(function() {
 // 질문 관련 Routes
 Route::middleware('auth:api')->group(function() {
     Route::post('question', [QuestionController::class, 'createQuestion']);
+    Route::delete('question/{question_id}', [QuestionController::class, 'deleteQuestion']);
     Route::post('question/{question_id}/answer', [QuestionController::class, 'answerQuestion']);
     Route::put('question/{question_id}/answer/{answer_id}/choose', [QuestionController::class, 'chooseAnswer']);
+    Route::delete('question/{question_id}/answer/{answer_id}', [QuestionController::class, 'deleteAnswer']);
 });

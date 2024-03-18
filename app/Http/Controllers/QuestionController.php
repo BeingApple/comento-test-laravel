@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Contracts\AnswerCommand;
 use App\Contracts\ChooseAnswerCommand;
+use App\Contracts\DeleteAnswerCommand;
+use App\Contracts\DeleteQuestionCommand;
 use App\Contracts\QuestionCommand;
 use App\Contracts\Services\QuestionServiceInterface;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
-use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class QuestionController extends Controller
@@ -72,5 +73,33 @@ class QuestionController extends Controller
 
         $result = $this->questionService->chooseAnswer($command);
         return response()->base($result, "답변이 채택되었습니다.", $command);
+    }
+
+    public function deleteAnswer(string $question_id, string $answer_id) {
+        $user = Auth::user();
+
+        if (empty($question_id) || empty($answer_id)) {
+            // 아이디값이 이상한 경우 예외 발생
+            throw new NotFoundHttpException("잘못된 아이디입니다.");
+        }
+
+        $command = new DeleteAnswerCommand($question_id, $answer_id, $user->id);
+
+        $result = $this->questionService->deleteAnswer($command);
+        return response()->base($result, "답변이 삭제되었습니다.", $command);
+    }
+
+    public function deleteQuestion(string $question_id) {
+        $user = Auth::user();
+
+        if (empty($question_id)) {
+            // 아이디값이 이상한 경우 예외 발생
+            throw new NotFoundHttpException("잘못된 아이디입니다.");
+        }
+
+        $command = new DeleteQuestionCommand($question_id, $user->id);
+
+        $result = $this->questionService->deleteQuestion($command);
+        return response()->base($result, "질문이 삭제되었습니다.", $command);
     }
 }
