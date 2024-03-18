@@ -8,6 +8,7 @@ use App\Contracts\DeleteAnswerCommand;
 use App\Contracts\DeleteQuestionCommand;
 use App\Contracts\QuestionCommand;
 use App\Contracts\Services\QuestionServiceInterface;
+use App\Http\Resources\QuestionResource;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -17,6 +18,13 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class QuestionController extends Controller
 {
     public function __construct(protected QuestionServiceInterface $questionService) {
+    }
+
+    public function getQuestion(Request $request, string $id) {
+        $question = $this->questionService->findQuestion($id);
+        $resource = new QuestionResource($question);
+
+        return response()->base(true, "조회되었습니다.", $resource);
     }
 
     public function createQuestion(Request $request) {
@@ -43,10 +51,10 @@ class QuestionController extends Controller
         return response()->base($result, "질문이 작성되었습니다.", $command);
     }
 
-    public function answerQuestion(Request $request, string $question_id) {
+    public function answerQuestion(Request $request, string $id) {
         $user = Auth::user();
 
-        if (empty($question_id)) {
+        if (empty($id)) {
             // 질문 아이디값이 이상한 경우 예외 발생
             throw new NotFoundHttpException("잘못된 질문 아이디입니다.");
         }
@@ -55,7 +63,7 @@ class QuestionController extends Controller
             'answer' => ['required', 'string'],
         ]);
 
-        $command = new AnswerCommand($question_id, $user->id, $validated["answer"]);
+        $command = new AnswerCommand($id, $user->id, $validated["answer"]);
 
         $result = $this->questionService->answerQuestion($command);
         return response()->base($result, "답변이 작성되었습니다.", $command);
@@ -89,15 +97,15 @@ class QuestionController extends Controller
         return response()->base($result, "답변이 삭제되었습니다.", $command);
     }
 
-    public function deleteQuestion(string $question_id) {
+    public function deleteQuestion(string $id) {
         $user = Auth::user();
 
-        if (empty($question_id)) {
+        if (empty($id)) {
             // 아이디값이 이상한 경우 예외 발생
             throw new NotFoundHttpException("잘못된 아이디입니다.");
         }
 
-        $command = new DeleteQuestionCommand($question_id, $user->id);
+        $command = new DeleteQuestionCommand($id, $user->id);
 
         $result = $this->questionService->deleteQuestion($command);
         return response()->base($result, "질문이 삭제되었습니다.", $command);
