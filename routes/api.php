@@ -25,4 +25,5 @@ Route::middleware('auth:api')->group(function() {
     Route::put('question/{question_id}/answer/{answer_id}/choose', [QuestionController::class, 'chooseAnswer']);
     Route::delete('question/{question_id}/answer/{answer_id}', [QuestionController::class, 'deleteAnswer']);
 });
+Route::get('question', [QuestionController::class, 'getQuestionList']);
 Route::get('question/{id}', [QuestionController::class, 'getQuestion']);

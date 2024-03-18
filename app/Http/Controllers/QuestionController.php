@@ -8,6 +8,7 @@ use App\Contracts\DeleteAnswerCommand;
 use App\Contracts\DeleteQuestionCommand;
 use App\Contracts\QuestionCommand;
 use App\Contracts\Services\QuestionServiceInterface;
+use App\Http\Resources\QuestionCollection;
 use App\Http\Resources\QuestionResource;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -20,11 +21,18 @@ class QuestionController extends Controller
     public function __construct(protected QuestionServiceInterface $questionService) {
     }
 
-    public function getQuestion(Request $request, string $id) {
+    public function getQuestion(string $id) {
         $question = $this->questionService->findQuestion($id);
         $resource = new QuestionResource($question);
 
         return response()->base(true, "조회되었습니다.", $resource);
+    }
+
+    public function getQuestionList(Request $request) {
+        $list = $this->questionService->getQuestionList($request->query("block") ?? 6);
+        $collection = new QuestionCollection($list);
+
+        return response()->base(true, "조회되었습니다.", $collection);
     }
 
     public function createQuestion(Request $request) {

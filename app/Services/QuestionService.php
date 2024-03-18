@@ -12,11 +12,17 @@ use App\Contracts\Services\UserServiceInterface;
 use App\Models\Answer;
 use App\Models\Question;
 use Exception;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class QuestionService implements QuestionServiceInterface {
     public function __construct(protected UserServiceInterface $userService) {
+    }
+
+    public function getQuestionList(int $block = 6): LengthAwarePaginator {
+        // 페이지네이션 결과를 조회
+        return Question::paginate($block);
     }
 
     public function findQuestion(string $id): Question {

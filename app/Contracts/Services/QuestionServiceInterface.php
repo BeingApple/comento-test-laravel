@@ -11,8 +11,15 @@ use App\Models\Answer;
 use App\Models\Question;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 interface QuestionServiceInterface {
+    /**
+     * @param int $block
+     * @return LengthAwarePaginator
+     */
+    public function getQuestionList(int $block = 6);
+
     /**
      * @param string $id
      * @return Question
