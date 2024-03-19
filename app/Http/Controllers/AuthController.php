@@ -16,6 +16,7 @@ class AuthController extends Controller
      * @OA\Post(
      *     path="/logout",
      *     summary="로그아웃",
+     *     description="로그아웃 시 요청한 Bearer JWT를 폐기합니다.",
      *     tags={"인증"},
      *     @OA\Response(
      *         response=200,
@@ -47,13 +48,14 @@ class AuthController extends Controller
      * @OA\Post(
      *     path="/refresh",
      *     summary="토큰 갱신",
+     *     description= "갱신 시 요청한 Bearer JWT를 폐기하고 새로운 토큰을 발급합니다.",
      *     tags={"인증"},
      *     @OA\Response(
      *         response=200,
      *         description="성공적으로 갱신되어 새로운 토큰이 발급되었습니다.",
      *         @OA\JsonContent(
      *             schema=@OA\Schema(
-     *                 schema="",
+     *                 schema="TokenRefreshResponse",
      *                 allOf = {@OA\Schema(ref="#/components/schemas/BaseResponse")},
      *                 properties = {
      *                     "value" = @OA\Property(ref="#/components/schemas/RefreshToken")
