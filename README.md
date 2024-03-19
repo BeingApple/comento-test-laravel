@@ -1,66 +1,43 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+## 과제에 대하여
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+우선, 공들여 낸 채용 과제를 보내주셔서 감사드립니다. 지원자의 여러 면모를 자세히 확인해보고 싶다는 바가 느껴지는 성의 있는 채용과제라고 느꼈습니다. 
 
-## About Laravel
+너무나 오랜만의 라라벨과 PHP여서 그런지 스스로 판단하기에 그리 만족스러운 결과물을 만들진 못했고, 제 숙련도가 좀 더 좋아서 시간이 넉넉했더라면 README 파일이나 주석도 좀 더 신경써서 작성하고 테스트 케이스와 API 명세도 모두 추가하고 싶었지만 아쉽게도 그러지 못했습니다. 그래도 좋은 기회였고, 좋은 경험이었습니다. 다시 한번 기분 좋은 채용과제를 보내주셔서 감사드립니다.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+프로젝트 지시서에서 MVP를 MVC로 잘못 읽는 실수를 해서 User-Social처럼 Model을 잘게 쪼개고 관계 정의까지 하고 Category도 동일하게 작업하려는 찰나에 MVP임을 확인하고 황급히 좀 더 유연하게 대응 가능한 형태로 변경했습니다. 제 실수입니다.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+미완성이라 슬픈 API 명세는 Swagger 와 OpenApi를 통해 작성되었습니다.
+- **[미완성이라 슬픈 API 명세](http://localhost:8000/api/documentation)**
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 인증 과정
 
-## Learning Laravel
+인증 과정은 다음 라이브러리를 활용해 구현되었습니다. 
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- **laravel/socialite**
+- **socialiteproviders/kakao**
+- **tymon/jwt-auth**
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+로그인이 완료되면 코멘토 홈페이지로 이동됩니다. 프론트엔드와 사전 협의하여 발급된 Access Token 을 취급할 수 있는 페이지에 반환하면 됩니다.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+![카카오 로그인 화면](https://github.com/BeingApple/comento-test-laravel/assets/21231415/36bd335d-106a-415a-9832-b58e150aa44f)
+![개인정보 제공 동의 화면](https://github.com/BeingApple/comento-test-laravel/assets/21231415/3b52d9d4-bcf8-43a8-83bf-1a080d1a0fe1)
 
-## Laravel Sponsors
+## 제공되는 API 목록
+- **GET /social/{type}/login** 
+- **GET /social/{type}/callback**
+- **POST /logout** Bearer 인증 필요
+- **POST /refresh** Bearer 인증 필요
+- **PUT /user/me** Bearer 인증 필요
+- **PUT /user/me/type** Bearer 인증 필요
+- **GET /question**
+- **POST /question** Bearer 인증 필요
+- **GET /question/{id}**
+- **DELETE /question/{id}** Bearer 인증 필요
+- **POST /question/{id}/answer** Bearer 인증 필요
+- **PUT /question/{question_id}/answer/{answer_id}/choose** Bearer 인증 필요
+- **DELETE /question/{question_id}/answer/{answer_id}** Bearer 인증 필요
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## 어려움을 겪은 것들
 
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- VSCode 를 통해 작업을 진행했는데 주로 사용하던 IntelliJ와 비교해 저를 좀 힘들게 했습니다. 파일명에 모르고 공백을 넣어서 에러가 나는데 이걸 찾는데 한참 시간을 썼던 거 같습니다. 또 참조나 정의로 이동하는 것도 좀 애매했습니다. 라라벨에 좋은 IDE가 있으려나요?
+- Pagination 은 Laravel 내부적으로 어떻게 동작하는지 이게 왜 되는지 좀 신기합니다. 저는 별도로 페이징 메소드에 필요한 쿼리 파라메터나 Request 객체를 넘기지 않았는데 귀신같이 page 쿼리 파라메터를 가져다 쓰더군요. 이런 경우 보통 해당 메소드를 제공하는 클래스를 분석해보거나 인터넷에서 명세서를 확인해 보는데 제 검색력이 부족했는지 마땅한 결과물을 찾기가 어려웠습니다.
