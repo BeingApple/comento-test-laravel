@@ -7,7 +7,7 @@
 프로젝트 지시서에서 MVP를 MVC로 잘못 읽는 실수를 해서 User-Social처럼 Model을 잘게 쪼개고 관계 정의까지 하고 Category도 동일하게 작업하려는 찰나에 MVP임을 확인하고 황급히 좀 더 유연하게 대응 가능한 형태로 변경했습니다. 제 실수입니다.
 
 미완성이라 슬픈 API 명세는 Swagger 와 OpenApi를 통해 작성되었습니다.
-- **[미완성이라 슬픈 API 명세](http://localhost:8000/api/documentation)**
+- **[미완성이라 슬픈 API 명세 http://localhost:8000/api/documentation](http://localhost:8000/api/documentation)**
 
 ## 인증 과정
 
