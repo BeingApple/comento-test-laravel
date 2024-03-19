@@ -3,7 +3,7 @@
 namespace App\Contracts\Services;
 
 use Illuminate\Auth\AuthenticationException;
-use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Response;
 
 interface AuthServiceInterface {
     /**

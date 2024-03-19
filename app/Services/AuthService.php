@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Contracts\Services\AuthServiceInterface;
 use App\Contracts\RefreshToken;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Response;
 
 class AuthService implements AuthServiceInterface {
     public function logout(): Response {

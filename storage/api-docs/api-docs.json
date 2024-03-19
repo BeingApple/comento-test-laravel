@@ -1,0 +1,201 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "펫멘토",
+        "description": "코멘토 채용 과제",
+        "contact": {
+            "email": "whdydql123@icloud.com"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/logout": {
+            "post": {
+                "tags": [
+                    "인증"
+                ],
+                "summary": "로그아웃",
+                "operationId": "68a6108af04af5e3bc1ea68a6c6f1299",
+                "responses": {
+                    "200": {
+                        "description": "성공적으로 로그아웃되어 토큰이 폐기되었습니다.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BaseResponse"
+                                },
+                                "example": {
+                                    "result": "true",
+                                    "message": "로그아웃 되었습니다.",
+                                    "value": []
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "인증 정보가 없는 상태의 요청입니다.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BaseResponse"
+                                },
+                                "example": {
+                                    "result": "false",
+                                    "message": "로그인이 필요합니다.",
+                                    "value": []
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer-key": []
+                    }
+                ]
+            }
+        },
+        "/refresh": {
+            "post": {
+                "tags": [
+                    "인증"
+                ],
+                "summary": "토큰 갱신",
+                "operationId": "0c3ea3c61aed881016646810460499e9",
+                "responses": {
+                    "200": {
+                        "description": "성공적으로 갱신되어 새로운 토큰이 발급되었습니다.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "schema": {
+                                        "schema": "",
+                                        "type": "object",
+                                        "allOf": [
+                                            {
+                                                "$ref": "#/components/schemas/BaseResponse"
+                                            },
+                                            {
+                                                "properties": {
+                                                    "": {
+                                                        "$ref": "#/components/schemas/RefreshToken"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        ]
+                                    }
+                                },
+                                "example": {
+                                    "result": "true",
+                                    "message": "갱신되었습니다.",
+                                    "value": {
+                                        "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvcmVmcmVzaCIsImlhdCI6MTcxMDgyMDQ3NCwiZXhwIjoxNzEwODI0MDg1LCJuYmYiOjE3MTA4MjA0ODUsImp0aSI6IjZXYnZSMFhITTdiTjZYNWMiLCJzdWIiOiI5Yjk3NjIxMy0wZWMzLTQ2NTQtOTIyYS0xNDQxYTJjZTNjOTEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.VLQX1rc47jhptbgTbk8daOoRLbNi3dfap3KMIsZuTkk",
+                                        "type": "bearer",
+                                        "expires_in": 3600
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "인증 정보가 없는 상태의 요청입니다.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BaseResponse"
+                                },
+                                "example": {
+                                    "result": "false",
+                                    "message": "로그인이 필요합니다.",
+                                    "value": []
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer-key": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "RefreshToken": {
+                "title": "RefreshToken",
+                "description": "갱신 토큰 모델",
+                "properties": {
+                    "access_token": {
+                        "description": "갱신된 토큰",
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "token_type": {
+                        "description": "토큰 유형",
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "expires_in": {
+                        "description": "만료일자",
+                        "type": "integer",
+                        "format": "int"
+                    }
+                },
+                "type": "object"
+            },
+            "": {
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/BaseResponse"
+                    },
+                    {
+                        "properties": {
+                            "": {
+                                "$ref": "#/components/schemas/RefreshToken"
+                            }
+                        },
+                        "type": "object"
+                    }
+                ]
+            },
+            "BaseResponse": {
+                "title": "BaseResponse",
+                "description": "공통 응답 모델",
+                "required": [
+                    "result",
+                    "message"
+                ],
+                "properties": {
+                    "result": {
+                        "description": "응답 결과",
+                        "type": "boolean",
+                        "format": "boolean"
+                    },
+                    "message": {
+                        "description": "응답 메세지",
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "value": {
+                        "description": "응답",
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "bearer-key": {
+                "type": "http",
+                "name": "bearer-key",
+                "in": "header",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    }
+}
