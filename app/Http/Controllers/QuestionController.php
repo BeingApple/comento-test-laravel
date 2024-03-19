@@ -56,7 +56,7 @@ class QuestionController extends Controller
         );
 
         $result = $this->questionService->createQuestion($command);
-        return response()->base($result, "질문이 작성되었습니다.", $command);
+        return response()->base($result, "질문이 작성되었습니다.", $command, 201);
     }
 
     public function answerQuestion(Request $request, string $id) {
@@ -74,7 +74,7 @@ class QuestionController extends Controller
         $command = new AnswerCommand($id, $user->id, $validated["answer"]);
 
         $result = $this->questionService->answerQuestion($command);
-        return response()->base($result, "답변이 작성되었습니다.", $command);
+        return response()->base($result, "답변이 작성되었습니다.", $command, 201);
     }
 
     public function chooseAnswer(string $question_id, string $answer_id) {
