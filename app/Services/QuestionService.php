@@ -22,7 +22,7 @@ class QuestionService implements QuestionServiceInterface {
 
     public function getQuestionList(int $block = 6): LengthAwarePaginator {
         // 페이지네이션 결과를 조회
-        return Question::paginate($block);
+        return Question::orderByDesc('created_at')->paginate($block);
     }
 
     public function findQuestion(string $id): Question {
